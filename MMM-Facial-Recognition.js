@@ -42,9 +42,9 @@ Module.register('MMM-Facial-Recognition',{
 		return {
 			en: "translations/en.json",
 			de: "translations/de.json",
-      			es: "translations/es.json",
-      			zh: "translations/zh.json",
-      			nl: "translations/nl.json",
+			es: "translations/es.json",
+			zh: "translations/zh.json",
+			nl: "translations/nl.json",
 			sv: "translations/sv.json",
 			fr: "translations/fr.json"
 		};
@@ -58,7 +58,7 @@ Module.register('MMM-Facial-Recognition',{
 			});
 		});
 		
-		MM.getModules().withClass(this.current_user).enumerate(function(module) {
+		MM.getModules().withClass([this.current_user, this.config.everyoneClass]).enumerate(function(module) {
 			module.show(1000, function() {
 				Log.log(module.name + ' is shown.');
 			});
@@ -68,7 +68,7 @@ Module.register('MMM-Facial-Recognition',{
 	},
 	logout_user: function () {
 		
-		MM.getModules().withClass(this.current_user).enumerate(function(module) {
+		MM.getModules().withClass([this.current_user, this.config.everyoneClass]).enumerate(function(module) {
 			module.hide(1000, function() {
 				Log.log(module.name + ' is hidden.');
 			});
@@ -85,6 +85,7 @@ Module.register('MMM-Facial-Recognition',{
 	
 	// Override socket notification handler.
 	socketNotificationReceived: function(notification, payload) {
+		debugger;
 		if (payload.action == "login"){
 			if (this.current_user_id != payload.user){
 				this.logout_user()
@@ -104,7 +105,7 @@ Module.register('MMM-Facial-Recognition',{
 			}
 		}
 		else if (payload.action == "logout"){
-			this.logout_user()
+			this.logout_user();
 			this.current_user = null;
 		}
 	},
